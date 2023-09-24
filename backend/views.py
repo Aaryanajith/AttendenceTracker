@@ -8,7 +8,7 @@ from .models import Attendance
 # {hash: <>, time: <>}
 @api_view(['POST'])
 @parser_classes([JSONParser])
-def mark_attendence(request):
+def mark_attendance(request):
     hash = request.data['hash']
     # improve this:
     try:
