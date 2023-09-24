@@ -1,2 +1,4 @@
 AT_backend_env/
 project_requirements.txt
+__pycache__/
+db.sqlite3
