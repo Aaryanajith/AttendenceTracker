@@ -33,6 +33,14 @@ def mark_attendence(request):
 @api_view(['GET'])
 def get_attendence(request):
     data = Attendence.objects.values_list(
+            'name', 'email', 'isPresent',
+            )
+    return Response(data)
+
+
+@api_view(['GET'])
+def get_attendence_dev(request):
+    data = Attendence.objects.values_list(
             'name', 'email', 'isPresent', 'attendence_log'
             )
     return Response(data)

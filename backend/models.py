@@ -1,8 +1,11 @@
 from django.db import models
 import uuid
 
+
 def defaultDict():
     return {'log': []}
+
+
 class Attendence(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=80)
