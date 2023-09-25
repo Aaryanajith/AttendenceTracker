@@ -85,3 +85,11 @@ def export_csv(request):
         writer.writerow(entry)
 
     return response
+
+
+@api_view(['DELETE'])
+def flush_table(request):
+    Attendence.objects.all().delete()
+    response = HttpResponse("Tables reset.")
+    response.status_code = 200
+    return response
