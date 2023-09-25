@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from .models import Attendence
 from .serializers import AttendenceSerializer, AttendenceSerializerDev
+import csv
 
 
 """
@@ -66,3 +67,21 @@ def get_attendence(request):
 def get_attendence_dev(request):
     data = AttendenceSerializerDev(Attendence.objects.all(), many=True).data
     return JsonResponse(data, safe=False)
+
+
+@api_view(['GET'])
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="attendence.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['id', 'name', 'email', 'isPresent', 'attendence_log'])
+
+    attendence = Attendence.objects.all().values_list(
+            'id', 'name', 'email', 'isPresent', 'attendence_log'
+            )
+
+    for entry in attendence:
+        writer.writerow(entry)
+
+    return response
