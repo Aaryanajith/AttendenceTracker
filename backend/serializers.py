@@ -5,10 +5,20 @@ from .models import Attendence
 class AttendenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendence
-        fields = (
+        fields = [
+            "name",
+            "email",
+            "isPresent",
+            ]
+
+
+class AttendenceSerializerDev(serializers.ModelSerializer):
+    class Meta:
+        model = Attendence
+        fields = [
             "id",
             "name",
             "email",
             "isPresent",
-            "attandence_log",
-            )
+            "attendence_log",
+            ]
