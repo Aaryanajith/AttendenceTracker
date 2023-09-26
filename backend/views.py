@@ -23,18 +23,20 @@ mark_attendence():
 @parser_classes([JSONParser])
 def mark_attendence(request):
 
+    response = HttpResponse()
+
     try:
         hash = request.data['hash']
         time = request.data['time']
     except KeyError:
-        response = HttpResponse("Improper input")
+        response.write("Improper input")
         response.status_code = 400
         return response
 
     try:
         assert (Attendence.objects.filter(id=hash).exists())
     except ValidationError:
-        response = HttpResponse("No hash found")
+        response.write("No hash found")
         response.status_code = 404
         return response
 
@@ -44,7 +46,7 @@ def mark_attendence(request):
     if isPresent_value is False:
         attendence_obj.isPresent = True
         attendence_obj.save()
-        response = HttpResponse("Marked as present.")
+        response.write("Marked as present.")
         response.status_code = 200
         return response
 
@@ -52,7 +54,7 @@ def mark_attendence(request):
     log = attendence_obj.attendence_log['log']
     log.append(time)
     attendence_obj.save()
-    response = HttpResponse("Timestamp appended.")
+    response.write("Timestamp appended.")
     response.status_code = 200
     return response
 
