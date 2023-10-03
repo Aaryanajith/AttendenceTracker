@@ -8,7 +8,8 @@ class AttendenceSerializer(serializers.ModelSerializer):
         fields = [
             "name",
             "email",
-            "isPresent",
+            "attendence_log",
+            "misc_log",
             ]
 
 
@@ -19,6 +20,6 @@ class AttendenceSerializerDev(serializers.ModelSerializer):
             "id",
             "name",
             "email",
-            "isPresent",
             "attendence_log",
+            "misc_log",
             ]

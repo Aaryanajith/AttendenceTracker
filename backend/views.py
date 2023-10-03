@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view, parser_classes
 import datetime
-import json
 from rest_framework.parsers import JSONParser
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
@@ -9,6 +8,7 @@ from .serializers import AttendenceSerializer, AttendenceSerializerDev
 import csv
 
 
+attendence_log_template = dict()
 """
 mark_attendence():
     Expected input: {'hash': <hash>, 'time': <time>}
@@ -99,16 +99,13 @@ def export_csv(request):
 @api_view(['POST'])
 @parser_classes([JSONParser])
 def add_session(request):
-    # _ = json.dumps(request.data)
-    # data = json.loads(_)
-    attendence_log_template = dict()
     attendence_log_template['log'] = []
     for i in range(request.data['days']):
         element_dict = dict()
         date = datetime.datetime.strptime(request.data['date'], '%d/%m/%Y')
-        element_dict['date'] = date + datetime.timedelta(days=i)
+        element_dict['date'] = str(date + datetime.timedelta(days=i))
         for j in range(request.data['sessions']):
             element_dict['session' + str(j+1)] = False
         attendence_log_template['log'].append(element_dict)
-
+    Attendence.objects.all().update(attendence_log=attendence_log_template)
     return HttpResponse(attendence_log_template.items())

@@ -1,7 +1,6 @@
 from django.db import models
 import uuid
 
-
 def defaultDict():
     return {'log': []}
 
