@@ -67,6 +67,7 @@ def get_attendence(request):
     return JsonResponse(data, safe=False)
 
 
+# Debugging purposes
 @api_view(['GET'])
 def get_attendence_dev(request):
     data = AttendenceSerializerDev(Attendence.objects.all(), many=True).data
@@ -79,10 +80,12 @@ def export_csv(request):
     response['Content-Disposition'] = 'attachment; filename="attendence.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['id', 'name', 'email', 'isPresent', 'attendence_log'])
+    writer.writerow([
+        'id', 'name', 'email', 'isPresent', 'attendence_log', 'misc_log'
+        ])
 
     attendence = Attendence.objects.all().values_list(
-            'id', 'name', 'email', 'isPresent', 'attendence_log'
+            'id', 'name', 'email', 'isPresent', 'attendence_log', 'misc_log'
             )
 
     for entry in attendence:
@@ -91,28 +94,21 @@ def export_csv(request):
     return response
 
 
-@api_view(['DELETE'])
-def flush_table(request):
-    Attendence.objects.all().delete()
-    response = HttpResponse("Tables reset.")
-    response.status_code = 200
-    return response
-
-
 # Expected input:
 # { date:, days:, sessions: }
 @api_view(['POST'])
+@parser_classes([JSONParser])
 def add_session(request):
-    _ = json.dumps(request.data)
-    data = json.loads(_)
+    # _ = json.dumps(request.data)
+    # data = json.loads(_)
     attendence_log_template = dict()
     attendence_log_template['log'] = []
-    for i in range(data['days']):
+    for i in range(request.data['days']):
         element_dict = dict()
-        date = datetime.datetime.strptime(data['date'], '%d/%m/%Y')
+        date = datetime.datetime.strptime(request.data['date'], '%d/%m/%Y')
         element_dict['date'] = date + datetime.timedelta(days=i)
-        for j in range(data['sessions']):
+        for j in range(request.data['sessions']):
             element_dict['session' + str(j+1)] = False
-        print(element_dict)
         attendence_log_template['log'].append(element_dict)
-    return HttpResponse('Ok')
+
+    return HttpResponse(attendence_log_template.items())
