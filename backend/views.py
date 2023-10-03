@@ -1,4 +1,6 @@
 from rest_framework.decorators import api_view, parser_classes
+import datetime
+import json
 from rest_framework.parsers import JSONParser
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
@@ -95,3 +97,22 @@ def flush_table(request):
     response = HttpResponse("Tables reset.")
     response.status_code = 200
     return response
+
+
+# Expected input:
+# { date:, days:, sessions: }
+@api_view(['POST'])
+def add_session(request):
+    _ = json.dumps(request.data)
+    data = json.loads(_)
+    attendence_log_template = dict()
+    attendence_log_template['log'] = []
+    for i in range(data['days']):
+        element_dict = dict()
+        date = datetime.datetime.strptime(data['date'], '%d/%m/%Y')
+        element_dict['date'] = date + datetime.timedelta(days=i)
+        for j in range(data['sessions']):
+            element_dict['session' + str(j+1)] = False
+        print(element_dict)
+        attendence_log_template['log'].append(element_dict)
+    return HttpResponse('Ok')

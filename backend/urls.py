@@ -8,6 +8,7 @@ urlpatterns = [
         path('get_attendence_dev/', views.get_attendence_dev),
         path('export/', views.export_csv),
         path('flush_table/', views.flush_table),
+        path('add_session/', views.add_session),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
