@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Attendence, Event
+from .models import Attendee, Event
 
-admin.site.register(Attendence)
+admin.site.register(Attendee)
 admin.site.register(Event)

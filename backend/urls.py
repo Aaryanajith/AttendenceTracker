@@ -3,10 +3,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-        path('get_attendence/', views.get_attendence),
-        path('export/', views.export_csv),
-        path('add_session/', views.add_session),
-        path('create_event/', views.create_event)
+        path('create_event/', views.create_event),
+        path('get_events/', views.get_events),
+        path('delete_event/', views.delete_event),
+        path('get_attendees/', views.get_attendees),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

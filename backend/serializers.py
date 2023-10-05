@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Attendence, Event
+from .models import Attendee, Event
 
 
-class AttendenceSerializer(serializers.ModelSerializer):
+class AttendeeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Attendence
+        model = Attendee
         fields = [
             "id",
             "name",
@@ -15,7 +15,7 @@ class AttendenceSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.Serializer):
-    name = serializers.CharField()
+    event_name = serializers.CharField()
     starting_date = serializers.DateField()
     num_of_days = serializers.IntegerField()
     num_of_sessions = serializers.IntegerField()
