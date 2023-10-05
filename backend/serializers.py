@@ -6,17 +6,6 @@ class AttendenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendence
         fields = [
-            "name",
-            "email",
-            "attendence_log",
-            "misc_log",
-            ]
-
-
-class AttendenceSerializerDev(serializers.ModelSerializer):
-    class Meta:
-        model = Attendence
-        fields = [
             "id",
             "name",
             "email",

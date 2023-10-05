@@ -1,10 +1,9 @@
 from rest_framework.decorators import api_view, parser_classes
-import datetime
+from datetime import datetime
 from rest_framework.parsers import JSONParser
-from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from .models import Attendence
-from .serializers import AttendenceSerializer, AttendenceSerializerDev
+from .serializers import AttendenceSerializer, EventSerializer
 import csv
 
 attendence_log_template = dict()
@@ -14,24 +13,25 @@ attendence_log_template = dict()
 # @parser_classes([JSONParser])
 # def mark_attendence(request):
 
-# expected input: 
+# expected input:
 # { name: <>, start_date: <>, days: <>, sessions: <> }
 @api_view(['POST'])
 @parser_classes([JSONParser])
 def create_event(request):
-    reponse = HttpResponse()
+    request.data['starting_date'] = str(datetime.strptime(
+            request.data['starting_date'], "%d/%m/%Y"
+        ).date())
+    seralizer = EventSerializer(data=request.data)
+    if seralizer.is_valid():
+        seralizer.save()
+        return JsonResponse(seralizer.data, status=201)
+    print(seralizer.errors)
+    return JsonResponse(seralizer.data, status=400)
 
-    
+
 @api_view(['GET'])
 def get_attendence(request):
     data = AttendenceSerializer(Attendence.objects.all(), many=True).data
-    return JsonResponse(data, safe=False)
-
-
-# Debugging purposes
-@api_view(['GET'])
-def get_attendence_dev(request):
-    data = AttendenceSerializerDev(Attendence.objects.all(), many=True).data
     return JsonResponse(data, safe=False)
 
 

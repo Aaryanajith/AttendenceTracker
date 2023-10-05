@@ -7,7 +7,7 @@ def defaultDict():
 
 
 class Attendence(models.Model):
-    event_id = models.ForeignKey()
+    event_id = models.ForeignKey('Event', on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -19,7 +19,7 @@ class Attendence(models.Model):
 
 
 class Event(models.Model):
-    id = models.AutoField()
+    event_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     starting_date = models.DateField()
     num_of_days = models.IntegerField()
