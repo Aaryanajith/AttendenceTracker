@@ -19,8 +19,8 @@ class Attendee(models.Model):
     def __str__(self):
         return self.email
 
-    def save(self, *args, **kwargs):
-        if self.event_name:
+    def save(self, initial, *args, **kwargs):
+        if self.event_name and initial:
             attendence_log = dict()
             attendence_log['log'] = []
             event = Event.objects.get(event_name=self.event_name)

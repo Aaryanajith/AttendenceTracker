@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 # expected input format:
-# { name: <>, start_date: <>, days: <>, sessions: <> }
+# { name: "", start_date: "dd/mm/yyyy" days: +int, sessions: +int }
 @api_view(['POST'])
 @parser_classes([JSONParser])
 def create_event(request):
@@ -45,6 +45,8 @@ def delete_event(request):
         return HttpResponse(status=404)
 
 
+# Expected input:
+# { event_name : "" }
 @api_view(['GET', 'POST'])
 def get_attendees(request):
     if request.method == 'GET':
@@ -55,4 +57,30 @@ def get_attendees(request):
                 event_name=request.data['event_name']), many=True
             ).data
 
-    return JsonResponse(data, safe=False)
+    return JsonResponse(data, safe=False, status=200)
+
+
+# Expected input:
+# { id: uuid4, date: "". session: "", time = ""}
+@api_view(['POST'])
+@parser_classes([JSONParser])
+def mark_attendence(request):
+    try:
+        attendee = Attendee.objects.get(id=request.data['id'])
+        date = datetime.strptime(
+            request.data['date'], "%d/%m/%Y"
+        ).date()
+        for day in attendee.attendence_log['log']:
+            print(day['date'] + " " + str(date))
+            if day['date'] == str(date):
+                if day[request.data['session']]:
+                    attendee.misc_log['log'].append(request.data['time'])
+                    attendee.save(initial=False)
+                    return HttpResponse(status=201)
+                day[request.data['session']] = True
+                attendee.save(initial=False)
+                return HttpResponse(status=201)
+        return HttpResponse(status=404)
+    except (ObjectDoesNotExist, ValueError) as e:
+        print(e)
+        return HttpResponse(status=404)

@@ -7,6 +7,7 @@ urlpatterns = [
         path('get_events/', views.get_events),
         path('delete_event/', views.delete_event),
         path('get_attendees/', views.get_attendees),
+        path('mark_attendence/', views.mark_attendence),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
