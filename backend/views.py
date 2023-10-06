@@ -88,12 +88,18 @@ def delete_event(request):
 @api_view(['GET', 'POST'])
 def get_attendees(request):
     if request.method == 'GET':
-        data = AttendeeSerializer(Attendee.objects.all(), many=True).data
+        try:
+            data = AttendeeSerializer(Attendee.objects.all(), many=True).data
+        except Exception:
+            return JsonResponse(request.data, status=400)
 
     if request.method == 'POST':
-        data = AttendeeSerializer(Attendee.objects.filter(
-            event_name=request.data['event_name']), many=True
-        ).data
+        try:
+            data = AttendeeSerializer(Attendee.objects.filter(
+                event_name=request.data['event_name']), many=True
+            ).data
+        except Exception:
+            return JsonResponse(request.data, status=400)
 
     return JsonResponse(data, safe=False, status=200)
 

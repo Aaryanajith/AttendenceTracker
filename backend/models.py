@@ -1,6 +1,5 @@
 from django.db import models
 import datetime
-import uuid
 
 
 def defaultDict():
@@ -9,7 +8,7 @@ def defaultDict():
 
 class Attendee(models.Model):
     event_name = models.ForeignKey('Event', on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    attendee_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     attendence_log = models.JSONField(default=defaultDict)
