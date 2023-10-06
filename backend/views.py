@@ -6,9 +6,48 @@ from .models import Attendee, Event
 from .serializers import AttendeeSerializer, EventSerializer
 from django.core.exceptions import ObjectDoesNotExist
 
+"""
+API Documentation
 
-# expected input format:
-# { name: "", start_date: "dd/mm/yyyy" days: +int, sessions: +int }
+create_event() :
+    input: {
+            event_name: "",
+            starting_date: "",
+            num_of_days: uint,
+            num_of_sessions: uint,
+        }
+    output:
+        if input is in incorrect format: {}, 400
+        else if serializer is not valid: {serializer.error}, 400
+        else: {input data}, 201
+
+get_events():
+    output: [All events as JSON], 200
+
+delete_events():
+    input: {
+            event_name : "",
+        }
+    output:
+        if event does not exist: 404
+        else: 200
+
+get_attendees():
+    [POST only] input: {
+                    event_name = ""
+                }
+    output: [All attendees for that event in JSON], 200
+
+mark_attendence():
+    input: {
+            date: "",
+            time: "",
+            session: "",
+            id: "",
+    }
+"""
+
+
 @api_view(['POST'])
 @parser_classes([JSONParser])
 def create_event(request):
@@ -45,8 +84,6 @@ def delete_event(request):
         return HttpResponse(status=404)
 
 
-# Expected input:
-# { event_name : "" }
 @api_view(['GET', 'POST'])
 def get_attendees(request):
     if request.method == 'GET':
@@ -54,33 +91,36 @@ def get_attendees(request):
 
     if request.method == 'POST':
         data = AttendeeSerializer(Attendee.objects.filter(
-                event_name=request.data['event_name']), many=True
-            ).data
+            event_name=request.data['event_name']), many=True
+        ).data
 
     return JsonResponse(data, safe=False, status=200)
 
 
-# Expected input:
-# { id: uuid4, date: "". session: "", time = ""}
 @api_view(['POST'])
 @parser_classes([JSONParser])
 def mark_attendence(request):
     try:
         attendee = Attendee.objects.get(id=request.data['id'])
-        date = datetime.strptime(
-            request.data['date'], "%d/%m/%Y"
-        ).date()
+        date = datetime.strptime(request.data['date'], "%d/%m/%Y").date()
+
         for day in attendee.attendence_log['log']:
-            print(day['date'] + " " + str(date))
-            if day['date'] == str(date):
+            if day['date'] == str(date):  # find matching date dict
+
+                # if attendence on that day for that session is already true
+                # append time to misc_log
                 if day[request.data['session']]:
                     attendee.misc_log['log'].append(request.data['time'])
                     attendee.save(initial=False)
                     return HttpResponse(status=201)
+
+                # else set attendence for session to true
                 day[request.data['session']] = True
                 attendee.save(initial=False)
                 return HttpResponse(status=201)
+
+        # could not find day (invalid date)
         return HttpResponse(status=404)
-    except (ObjectDoesNotExist, ValueError) as e:
-        print(e)
+
+    except (ObjectDoesNotExist, ValueError):
         return HttpResponse(status=404)
