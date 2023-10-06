@@ -1,10 +1,11 @@
-from rest_framework.decorators import api_view, parser_classes
+from rest_framework.decorators import api_view, parser_classes, authentication_classes
 from datetime import datetime
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse, HttpResponse
 from .models import Attendee, Event
 from .serializers import AttendeeSerializer, EventSerializer
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework_simplejwt import authentication
 
 """
 API Documentation
