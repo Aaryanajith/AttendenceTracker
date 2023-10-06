@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'attendencetracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test',
-        'USER': 'postgres',
-        'PASSWORD': 'test123',
+        'NAME': 'hacktoberfest_dev',
+        'USER': 'deny',
+        'PASSWORD': 'psqldeny',
         'HOST': 'localhost',
         'PORT': '5432',
     }

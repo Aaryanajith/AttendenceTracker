@@ -8,9 +8,10 @@ def defaultDict():
 
 class Attendee(models.Model):
     event_name = models.ForeignKey('Event', on_delete=models.CASCADE)
-    attendee_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=100)
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=150)
     email = models.EmailField()
+    roll_number = models.CharField(max_length=150, null=True, blank=True)
     attendence_log = models.JSONField(default=defaultDict)
     misc_log = models.JSONField(default=defaultDict)
 
