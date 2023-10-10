@@ -58,7 +58,7 @@ def create_event(request):
             request.data['starting_date'], "%d/%m/%Y"
         ).date()
     except (KeyError, ValueError) as e:
-        return JsonResponse(e, status=400)
+        return JsonResponse(e, status=400, safe=False)
 
     serializer = EventSerializer(data=request.data)
     if serializer.is_valid():
