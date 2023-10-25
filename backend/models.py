@@ -24,7 +24,7 @@ class Attendee(models.Model):
             attendence_log['log'] = []
             event = Event.objects.get(event_name=self.event_name)
 
-            for i in range(event.num_of_days):
+            for i in range(int(event.num_of_days)):
                 day_element = dict()
                 day_element['date'] = str(event.starting_date
                                           + datetime.timedelta(days=i))
@@ -44,7 +44,7 @@ class Event(models.Model):
                                   max_length=100,
                                   unique=True)
     starting_date = models.DateField()
-    num_of_days = models.IntegerField()
+    num_of_days = models.CharField()
     num_of_sessions = models.IntegerField()
 
     def __str__(self):

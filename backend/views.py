@@ -14,7 +14,7 @@ create_event() :
     input: {
             event_name: "",
             starting_date: "",
-            num_of_days: uint,
+            num_of_days: string,
             num_of_sessions: uint,
         }
     output:
