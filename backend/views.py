@@ -43,8 +43,8 @@ mark_attendence():
     input: {
             date: "",
             time: "",
-            session: "",
-            id: "",
+            session: string,
+            id: string
     }
 """
 
@@ -108,7 +108,8 @@ def get_attendees(request):
 @parser_classes([JSONParser])
 def mark_attendence(request):
     try:
-        attendee = Attendee.objects.get(id=request.data['id'])
+        str_id = str(request.data['id'])
+        attendee = Attendee.objects.get(id=str_id)
         date = datetime.strptime(request.data['date'], "%d/%m/%Y").date()
 
         for day in attendee.attendence_log['log']:
@@ -116,7 +117,8 @@ def mark_attendence(request):
 
                 # if attendence on that day for that session is already true
                 # append time to misc_log
-                if day[request.data['session']]:
+                str_session = str(request.data['session'])
+                if day[request.data[str_session]]:
                     attendee.misc_log['log'].append(request.data['time'])
                     attendee.save(initial=False)
                     return HttpResponse(status=201)
