@@ -11,7 +11,7 @@ class AttendeeSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.Serializer):
     event_name = serializers.CharField()
     starting_date = serializers.DateField()
-    num_of_days = serializers.CharField()
+    num_of_days = serializers.IntegerField()
     num_of_sessions = serializers.IntegerField()
 
     def create(self, validated_data):

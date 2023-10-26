@@ -14,7 +14,7 @@ create_event() :
     input: {
             event_name: "",
             starting_date: "",
-            num_of_days: string,
+            num_of_days: uint,
             num_of_sessions: uint,
         }
     output:
@@ -74,7 +74,7 @@ def get_events(request):
     return JsonResponse(data, safe=False, status=200)
 
 
-@api_view(['DELETE'])
+@api_view(['POST'])
 @parser_classes([JSONParser])
 def delete_event(request):
     try:
