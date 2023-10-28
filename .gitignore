@@ -3,3 +3,4 @@ project_requirements.txt
 __pycache__/
 db.sqlite3
 attendencetracker/.env
+data.json
