@@ -96,12 +96,12 @@ WSGI_APPLICATION = 'attendencetracker.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hct_dev',
-        'USER': 'postgres',
-        'PASSWORD': 'psqlaaryan',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'attendencetracker',
+        'USER': 'deny',
+        'PASSWORD': 'iusearchbtw',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 # Password validation
