@@ -27,8 +27,7 @@ get_events():
 
 delete_events():
     input: {
-            event_name : "",
-        }
+            event_name : "", }
     output:
         if event does not exist: 404
         else: 200
@@ -117,9 +116,7 @@ def mark_attendence(request):
 
                 # if attendence on that day for that session is already true
                 # append time to misc_log
-                str_session = str(request.data['session'])
-                for value in day:
-                    print(value)
+                str_session = "session" + str(request.data['session'])
                 if day[str_session]:
                     attendee.misc_log['log'].append(request.data['time'])
                     attendee.save(initial=False)
