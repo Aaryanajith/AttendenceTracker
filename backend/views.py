@@ -118,7 +118,9 @@ def mark_attendence(request):
                 # if attendence on that day for that session is already true
                 # append time to misc_log
                 str_session = str(request.data['session'])
-                if day[request.data[str_session]]:
+                for value in day:
+                    print(value)
+                if day[str_session]:
                     attendee.misc_log['log'].append(request.data['time'])
                     attendee.save(initial=False)
                     return HttpResponse(status=201)
