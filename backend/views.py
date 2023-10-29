@@ -123,7 +123,7 @@ def mark_attendence(request):
                     return HttpResponse(status=201)
 
                 # else set attendence for session to true
-                day[request.data['session']] = True
+                day[str_session] = True
                 attendee.save(initial=False)
                 return HttpResponse(status=201)
 
